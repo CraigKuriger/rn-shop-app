@@ -4,13 +4,22 @@ import { combineReducers, createStore } from "redux";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 import ShopNavigation from "./navigation/ShopNavigation";
-import productsReducer from "./store/reducers/products";
+import productsReducer, { ProductsShape } from "./store/reducers/products";
+import cartReducer, { CartShape } from "./store/reducers/cart";
+import { composeWithDevTools } from "redux-devtools-extension";
+// REMOVE FOR PRODUCTION
+
+export interface AppStateShape {
+  products: ProductsShape;
+  cart: CartShape;
+}
 
 const rootReducer = combineReducers({
   products: productsReducer,
+  cart: cartReducer,
 });
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, composeWithDevTools());
 
 const fetchFonts = () => {
   return Font.loadAsync({

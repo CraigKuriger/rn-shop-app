@@ -12,6 +12,5 @@ const initialState = {
 };
 
 export default (state: ProductsShape = initialState, action: object) => {
-  console.debug(action);
   return state;
 };
