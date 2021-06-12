@@ -5,11 +5,11 @@ export interface CartItemShape {
   sum: number;
 }
 
-class CartItem {
-  quantity: number;
-  productPrice: number;
-  productTitle: string;
-  sum: number;
+class CartItem implements CartItemShape {
+  quantity;
+  productPrice;
+  productTitle;
+  sum;
   constructor(
     quantity: number,
     productPrice: number,

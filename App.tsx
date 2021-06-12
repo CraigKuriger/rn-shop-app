@@ -6,17 +6,21 @@ import AppLoading from "expo-app-loading";
 import ShopNavigation from "./navigation/ShopNavigation";
 import productsReducer, { ProductsShape } from "./store/reducers/products";
 import cartReducer, { CartShape } from "./store/reducers/cart";
+import ordersReducer, { OrdersShape } from "./store/reducers/orders";
+
 import { composeWithDevTools } from "redux-devtools-extension";
 // REMOVE FOR PRODUCTION
 
 export interface AppStateShape {
   products: ProductsShape;
   cart: CartShape;
+  orders: OrdersShape;
 }
 
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
+  orders: ordersReducer,
 });
 
 const store = createStore(rootReducer, composeWithDevTools());

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
-import { AppStateShape } from "./ProductsOverviewScreen";
+import { AppStateShape } from "../../App";
 import * as cartActions from "../../store/actions/cart";
 
 interface NavigationShape {

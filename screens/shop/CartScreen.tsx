@@ -1,8 +1,10 @@
 import React from "react";
 import { View, Text, Button, FlatList } from "react-native";
 import { StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppStateShape } from "../../App";
+import * as cartActions from "../../store/actions/cart";
+import * as ordersActions from "../../store/actions/orders";
 import CartItem from "../../components/shop/CartItem";
 import Colors from "../../constants/Colors";
 
@@ -19,10 +21,12 @@ const CartScreen = () => {
         productId: key,
       });
     }
-    return transformedCartItems;
+    return transformedCartItems.sort((a, b) =>
+      a.productId > b.productId ? 1 : -1
+    );
   });
 
-  console.debug(cartItems);
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.screen}>
@@ -34,7 +38,9 @@ const CartScreen = () => {
         <Button
           color={Colors.accent}
           title="Order Now"
-          onPress={() => {}}
+          onPress={() => {
+            dispatch(ordersActions.addOrder(cartItems, cartTotalAmount));
+          }}
           disabled={cartItems.length === 0}
         />
       </View>
@@ -42,7 +48,12 @@ const CartScreen = () => {
         data={cartItems}
         keyExtractor={(item) => item.productId}
         renderItem={(itemData) => (
-          <CartItem item={itemData.item} onRemove={() => {}} />
+          <CartItem
+            item={itemData.item}
+            onRemove={() => {
+              dispatch(cartActions.removeFromCart(itemData.item.productId));
+            }}
+          />
         )}
       />
     </View>

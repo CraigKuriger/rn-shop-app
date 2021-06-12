@@ -1,7 +1,6 @@
 import React from "react";
 import { FlatList, Platform } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { ProductsShape } from "../../store/reducers/products";
 import { ProductShape } from "../../models/Product";
 import ProductItem from "../../components/shop/ProductItem";
 import * as cartActions from "../../store/actions/cart";

@@ -1,6 +1,6 @@
 import CartItem, { CartItemShape } from "../../models/Cart";
 import { ProductShape } from "../../models/Product";
-import { ADD_TO_CART } from "../actions/cart";
+import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/cart";
 
 export interface CartShape {
   items: { [key: string]: CartItemShape };
@@ -9,7 +9,8 @@ export interface CartShape {
 
 interface CartAction {
   type: string;
-  product: ProductShape;
+  product?: ProductShape;
+  productId?: string;
 }
 
 const initialState = {
@@ -20,6 +21,9 @@ const initialState = {
 export default (state: CartShape = initialState, action: CartAction) => {
   switch (action.type) {
     case ADD_TO_CART:
+      if (!action.product) {
+        return state;
+      }
       const addedProduct = action.product;
       const prodPrice = addedProduct.price;
       const prodTitle = addedProduct.title;
@@ -41,6 +45,34 @@ export default (state: CartShape = initialState, action: CartAction) => {
         ...state,
         items: { ...state.items, [addedProduct.id]: updatedOrNewCartItem },
         totalAmount: state.totalAmount + prodPrice,
+      };
+    case REMOVE_FROM_CART:
+      if (!action.productId) {
+        return state;
+      }
+      const selectedCartItem = state.items[action.productId];
+      const currentQuantity = selectedCartItem.quantity;
+      let updatedCartItems;
+
+      if (currentQuantity > 1) {
+        const updatedCartItem = new CartItem(
+          selectedCartItem.quantity - 1,
+          selectedCartItem.productPrice,
+          selectedCartItem.productTitle,
+          selectedCartItem.sum - selectedCartItem.productPrice
+        );
+        updatedCartItems = {
+          ...state.items,
+          [action.productId]: updatedCartItem,
+        };
+      } else {
+        updatedCartItems = { ...state.items };
+        delete updatedCartItems[action.productId];
+      }
+      return {
+        ...state,
+        items: updatedCartItems,
+        totalAmount: state.totalAmount - selectedCartItem.productPrice,
       };
     default:
       return state;

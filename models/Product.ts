@@ -7,13 +7,13 @@ export interface ProductShape {
   price: number;
 }
 
-class Product {
-  id: string;
-  ownerId: string;
-  title: string;
-  imageUrl: string;
-  description: string;
-  price: number;
+class Product implements ProductShape {
+  id;
+  ownerId;
+  title;
+  imageUrl;
+  description;
+  price;
   constructor(
     id: string,
     ownerId: string,

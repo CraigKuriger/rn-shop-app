@@ -16,7 +16,7 @@ interface Props {
     productTitle: string;
     sum: number;
   };
-  onRemove: (id: string) => void;
+  onRemove: () => void;
 }
 
 const CartItem = (props: Props) => {
@@ -31,7 +31,7 @@ const CartItem = (props: Props) => {
       <View style={styles.itemData}>
         <Text style={styles.mainText}>{sum.toFixed(2)}</Text>
         <TouchableOpacity
-          onPress={() => props.onRemove}
+          onPress={() => props.onRemove()}
           style={styles.deleteButton}
         >
           <Ionicons
