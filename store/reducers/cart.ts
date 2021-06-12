@@ -1,6 +1,7 @@
 import CartItem, { CartItemShape } from "../../models/Cart";
 import { ProductShape } from "../../models/Product";
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/cart";
+import { ADD_ORDER } from "../actions/orders";
 
 export interface CartShape {
   items: { [key: string]: CartItemShape };
@@ -74,6 +75,8 @@ export default (state: CartShape = initialState, action: CartAction) => {
         items: updatedCartItems,
         totalAmount: state.totalAmount - selectedCartItem.productPrice,
       };
+    case ADD_ORDER:
+      return initialState;
     default:
       return state;
   }

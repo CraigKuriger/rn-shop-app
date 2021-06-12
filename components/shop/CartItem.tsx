@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
-import { ProductShape } from "../../models/Product";
 
 interface Props {
   item: {
@@ -17,6 +16,7 @@ interface Props {
     sum: number;
   };
   onRemove: () => void;
+  deletable?: boolean;
 }
 
 const CartItem = (props: Props) => {
@@ -30,16 +30,18 @@ const CartItem = (props: Props) => {
       </View>
       <View style={styles.itemData}>
         <Text style={styles.mainText}>{sum.toFixed(2)}</Text>
-        <TouchableOpacity
-          onPress={() => props.onRemove()}
-          style={styles.deleteButton}
-        >
-          <Ionicons
-            name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
-            size={23}
-            color="red"
-          />
-        </TouchableOpacity>
+        {props.deletable && (
+          <TouchableOpacity
+            onPress={() => props.onRemove()}
+            style={styles.deleteButton}
+          >
+            <Ionicons
+              name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
+              size={23}
+              color="red"
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

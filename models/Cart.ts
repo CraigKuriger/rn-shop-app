@@ -1,4 +1,5 @@
 export interface CartItemShape {
+  productId?: string;
   quantity: number;
   productPrice: number;
   productTitle: string;
