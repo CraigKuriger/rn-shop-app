@@ -7,6 +7,7 @@ import * as cartActions from "../../store/actions/cart";
 import * as ordersActions from "../../store/actions/orders";
 import CartItem from "../../components/shop/CartItem";
 import Colors from "../../constants/Colors";
+import Card from "../../components/ui/Card";
 
 const CartScreen = () => {
   const cartTotalAmount = useSelector(
@@ -30,22 +31,25 @@ const CartScreen = () => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.summary}>
-        <Text style={styles.summaryText}>
-          Total:{" "}
-          <Text style={styles.amount}>
-            ${Math.round((parseFloat(cartTotalAmount.toFixed(2)) * 100) / 100)}
+      <Card style={styles.summary}>
+        <>
+          <Text style={styles.summaryText}>
+            Total:{" "}
+            <Text style={styles.amount}>
+              $
+              {Math.round((parseFloat(cartTotalAmount.toFixed(2)) * 100) / 100)}
+            </Text>
           </Text>
-        </Text>
-        <Button
-          color={Colors.accent}
-          title="Order Now"
-          onPress={() => {
-            dispatch(ordersActions.addOrder(cartItems, cartTotalAmount));
-          }}
-          disabled={cartItems.length === 0}
-        />
-      </View>
+          <Button
+            color={Colors.accent}
+            title="Order Now"
+            onPress={() => {
+              dispatch(ordersActions.addOrder(cartItems, cartTotalAmount));
+            }}
+            disabled={cartItems.length === 0}
+          />
+        </>
+      </Card>
       <FlatList
         data={cartItems}
         keyExtractor={(item) => item.productId}
@@ -71,14 +75,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 20,
     padding: 10,
-    shadowColor: "black",
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    // Shadow for iOS, Elevation for Android
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: "white",
   },
   summaryText: { fontFamily: "open-sans-bold", fontSize: 18 },
   amount: { color: Colors.primary },

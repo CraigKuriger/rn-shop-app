@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Platform } from "react-native";
+import { Alert, Button, Platform } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +24,16 @@ const UserProductsScreen = (props: Props) => {
 
   const dispatch = useDispatch();
 
-  console.debug(props);
+  const deleteHandler = (id) => {
+    Alert.alert("Are you sure?", "This cannot be undone", [
+      { text: "No", style: "default" },
+      {
+        text: "Yes",
+        style: "destructive",
+        onPress: () => dispatch(productsActions.deleteProduct(id)),
+      },
+    ]);
+  };
 
   const editProductHandler = (id) => {
     props.navigation.navigate("EditProducts", { productId: id });
@@ -45,9 +54,7 @@ const UserProductsScreen = (props: Props) => {
             <Button
               color={Colors.primary}
               title="Delete"
-              onPress={() =>
-                dispatch(productsActions.deleteProduct(itemData.item.id))
-              }
+              onPress={deleteHandler.bind(this, itemData.item.id)}
             />
           </>
         </ProductItem>

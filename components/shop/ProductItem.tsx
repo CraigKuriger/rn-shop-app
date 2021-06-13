@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
 } from "react-native";
+import Card from "../ui/Card";
 
 interface Props {
   imageUrl: string;
@@ -27,7 +28,7 @@ const ProductItem = (props: Props) => {
   //   useForeground is for Android only
   //   Only have one child item inside a Touchable Component
   return (
-    <View style={styles.product}>
+    <Card style={styles.product}>
       <View style={styles.touchable}>
         <TouchableComponent onPress={onSelect} useForeground>
           <View>
@@ -42,20 +43,12 @@ const ProductItem = (props: Props) => {
           </View>
         </TouchableComponent>
       </View>
-    </View>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   product: {
-    shadowColor: "black",
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    // Shadow for iOS, Elevation for Android
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: "white",
     height: 300,
     margin: 20,
   },

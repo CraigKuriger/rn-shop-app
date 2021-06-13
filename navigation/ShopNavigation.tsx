@@ -13,7 +13,10 @@ import UserProductsScreen from "../screens/user/UserProductsScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
 
 export interface NavigationShape {
+  getParam: (param: string) => any;
+  goBack: () => void;
   navigate: (path: string, params?: { [Key: string]: any }) => void;
+  setParams: (params: { [Key: string]: any }) => void;
   toggleDrawer: () => void;
 }
 

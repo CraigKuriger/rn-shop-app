@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, FlatList, Platform } from "react-native";
+import { Alert, Button, FlatList, Platform } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductShape } from "../../models/Product";
 import ProductItem from "../../components/shop/ProductItem";
@@ -42,8 +42,11 @@ const ProductsOverviewScreen = (props) => {
             />
             <Button
               color={Colors.primary}
-              title="Go To Cart"
-              onPress={() => dispatch(cartActions.addToCart(itemData.item))}
+              title="Add To Cart"
+              onPress={() => {
+                dispatch(cartActions.addToCart(itemData.item));
+                Alert.alert("Added To Cart");
+              }}
             />
           </>
         </ProductItem>
