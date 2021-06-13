@@ -4,24 +4,21 @@ import {
   View,
   Image,
   Text,
-  Button,
   Platform,
   TouchableOpacity,
   TouchableNativeFeedback,
 } from "react-native";
 
-import Colors from "../../constants/Colors";
-
 interface Props {
   imageUrl: string;
   title: string;
   price: number;
-  onViewDetail: () => void;
-  onAddToCart: () => void;
+  onSelect: () => void;
+  children: JSX.Element;
 }
 
 const ProductItem = (props: Props) => {
-  const { imageUrl, title, price, onViewDetail, onAddToCart } = props;
+  const { imageUrl, title, price, onSelect, children } = props;
 
   let TouchableComponent: any = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -32,7 +29,7 @@ const ProductItem = (props: Props) => {
   return (
     <View style={styles.product}>
       <View style={styles.touchable}>
-        <TouchableComponent onPress={onViewDetail} useForeground>
+        <TouchableComponent onPress={onSelect} useForeground>
           <View>
             <View style={styles.imageContainer}>
               <Image source={{ uri: imageUrl }} style={styles.image} />
@@ -41,18 +38,7 @@ const ProductItem = (props: Props) => {
               <Text style={styles.title}>{title}</Text>
               <Text style={styles.price}>${price.toFixed(2)}</Text>
             </View>
-            <View style={styles.actions}>
-              <Button
-                color={Colors.primary}
-                title="View Details"
-                onPress={onViewDetail}
-              />
-              <Button
-                color={Colors.primary}
-                title="Go To Cart"
-                onPress={onAddToCart}
-              />
-            </View>
+            <View style={styles.actions}>{children}</View>
           </View>
         </TouchableComponent>
       </View>
@@ -92,7 +78,7 @@ const styles = StyleSheet.create({
   },
   details: {
     alignItems: "center",
-    height: "15%",
+    height: "17%",
     padding: 10,
   },
   title: { fontFamily: "open-sans-bold", fontSize: 18, marginVertical: 2 },
@@ -101,7 +87,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "25%",
+    height: "23%",
     paddingHorizontal: 20,
   },
 });

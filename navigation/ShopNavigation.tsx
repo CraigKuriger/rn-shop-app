@@ -10,11 +10,15 @@ import ProductDetailScreen from "../screens/shop/ProductDetailScreen";
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 import { Ionicons } from "@expo/vector-icons";
 import UserProductsScreen from "../screens/user/UserProductsScreen";
+import EditProductScreen from "../screens/user/EditProductScreen";
+
+export interface NavigationShape {
+  navigate: (path: string, params?: { [Key: string]: any }) => void;
+  toggleDrawer: () => void;
+}
 
 export interface NavigationOptionsShape {
-  navigation: {
-    toggleDrawer: () => void;
-  };
+  navigation: NavigationShape;
 }
 
 const defaultNavigationOptions = {
@@ -75,6 +79,7 @@ const OrdersNavigator = createStackNavigator(
 const UserProductsNavigator = createStackNavigator(
   {
     UserProducts: UserProductsScreen,
+    EditProducts: EditProductScreen,
   },
   {
     navigationOptions: {

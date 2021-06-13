@@ -2,6 +2,7 @@ import CartItem, { CartItemShape } from "../../models/Cart";
 import { ProductShape } from "../../models/Product";
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/cart";
 import { ADD_ORDER } from "../actions/orders";
+import { DELETE_PRODUCT } from "../actions/products";
 
 export interface CartShape {
   items: { [key: string]: CartItemShape };
@@ -77,6 +78,23 @@ export default (state: CartShape = initialState, action: CartAction) => {
       };
     case ADD_ORDER:
       return initialState;
+    case DELETE_PRODUCT:
+      if (
+        !action.productId ||
+        (action.productId && !state.items[action.productId])
+      ) {
+        return state;
+      }
+
+      const updatedItems = { ...state.items };
+      const itemTotal = state.items[action.productId].sum;
+      delete updatedItems[action.productId];
+
+      return {
+        ...state,
+        items: updatedItems,
+        totalAmount: state.totalAmount - itemTotal,
+      };
     default:
       return state;
   }
