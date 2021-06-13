@@ -25,11 +25,12 @@ export const updateProduct = (
   id: string,
   title: string,
   description: string,
-  imageUrl: string
+  imageUrl: string,
+  price: number
 ) => {
   return {
     type: UPDATE_PRODUCT,
     productId: id,
-    productData: { id, title, description, imageUrl },
+    productData: { id, title, description, imageUrl, price },
   };
 };

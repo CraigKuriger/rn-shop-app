@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View, Text, Platform } from "react-native";
+import { StyleSheet, View, Text, Platform, Alert } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,8 +23,11 @@ const EditProductScreen = (props: Props) => {
   );
 
   const [title, setTitle] = useState(editedProduct?.title || "");
+  const [titleIsValid, setTitleIsValid] = useState(
+    editedProduct ? true : false
+  );
   const [imageUrl, setImageUrl] = useState(editedProduct?.imageUrl || "");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(editedProduct?.price.toString() || "");
   const [description, setDescription] = useState(
     editedProduct?.description || ""
   );
@@ -32,9 +35,19 @@ const EditProductScreen = (props: Props) => {
   const dispatch = useDispatch();
 
   const submitHandler = useCallback(() => {
+    if (!titleIsValid) {
+      Alert.alert("Please complete the form");
+      return;
+    }
     if (editedProduct) {
       dispatch(
-        productsActions.updateProduct(productId, title, description, imageUrl)
+        productsActions.updateProduct(
+          productId,
+          title,
+          description,
+          imageUrl,
+          +price
+        )
       );
     } else {
       dispatch(
@@ -50,6 +63,15 @@ const EditProductScreen = (props: Props) => {
   }, [submitHandler]);
   //   useEffects dependency is submitHandler which doen't change so it only executes once
 
+  const titleChangeHandler = (text: string) => {
+    if (text.trim().length === 0) {
+      setTitleIsValid(false);
+    } else {
+      setTitleIsValid(true);
+    }
+    setTitle(text);
+  };
+
   return (
     <ScrollView>
       <View style={styles.form}>
@@ -58,8 +80,13 @@ const EditProductScreen = (props: Props) => {
           <TextInput
             style={styles.input}
             value={title}
-            onChangeText={(text) => setTitle(text)}
+            onChangeText={titleChangeHandler}
+            autoCapitalize="sentences"
+            autoCorrect
           />
+          {!titleIsValid && (
+            <Text style={{ color: "red" }}>Please enter a title</Text>
+          )}
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Image URL</Text>
@@ -69,22 +96,23 @@ const EditProductScreen = (props: Props) => {
             onChangeText={(text) => setImageUrl(text)}
           />
         </View>
-        {!editedProduct && (
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Price</Text>
-            <TextInput
-              style={styles.input}
-              value={price}
-              onChangeText={(text) => setPrice(text)}
-            />
-          </View>
-        )}
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Price</Text>
+          <TextInput
+            style={styles.input}
+            value={price}
+            onChangeText={(text) => setPrice(text)}
+            keyboardType="decimal-pad"
+          />
+        </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Description</Text>
           <TextInput
             style={styles.input}
             value={description}
             onChangeText={(text) => setDescription(text)}
+            autoCapitalize="sentences"
+            autoCorrect
           />
         </View>
       </View>
