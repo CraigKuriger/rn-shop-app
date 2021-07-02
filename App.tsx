@@ -9,6 +9,7 @@ import cartReducer, { CartShape } from "./store/reducers/cart";
 import ordersReducer, { OrdersShape } from "./store/reducers/orders";
 
 import { composeWithDevTools } from "redux-devtools-extension";
+import { StatusBar } from "react-native";
 // REMOVE FOR PRODUCTION
 
 export interface AppStateShape {
@@ -47,6 +48,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
+      <StatusBar hidden={false} barStyle="dark-content" />
       <ShopNavigation />
     </Provider>
   );
