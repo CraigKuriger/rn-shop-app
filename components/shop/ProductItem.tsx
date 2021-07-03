@@ -25,6 +25,7 @@ const ProductItem = (props: Props) => {
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableComponent = TouchableNativeFeedback;
   }
+
   //   useForeground is for Android only
   //   Only have one child item inside a Touchable Component
   return (
