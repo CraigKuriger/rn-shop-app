@@ -1,6 +1,6 @@
+import { CartItemShape } from "../../models/Cart";
 import Order, { OrderShape } from "../../models/Order";
-import { ProductShape } from "../../models/Product";
-import { ADD_ORDER } from "../actions/orders";
+import { ADD_ORDER, SET_ORDERS } from "../actions/orders";
 
 export interface OrdersShape {
   orders: OrderShape[];
@@ -9,9 +9,12 @@ export interface OrdersShape {
 interface CartAction {
   type: string;
   orderData: {
-    items: ProductShape[];
+    id: string;
+    items: CartItemShape[];
     amount: number;
+    date: Date;
   };
+  orders: OrderShape[];
 }
 
 const initialState: OrdersShape = {
@@ -20,12 +23,16 @@ const initialState: OrdersShape = {
 
 export default (state: OrdersShape = initialState, action: CartAction) => {
   switch (action.type) {
+    case SET_ORDERS:
+      return {
+        orders: action.orders,
+      };
     case ADD_ORDER:
       const newOrder = new Order(
-        new Date().toString(),
+        action.orderData.id,
         action.orderData.items,
         action.orderData.amount,
-        new Date()
+        action.orderData.date
       );
       return {
         ...state,

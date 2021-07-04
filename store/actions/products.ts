@@ -83,6 +83,10 @@ export const createProduct = (
       }
     );
 
+    if (!response.ok) {
+      throw new Error("Something went wrong");
+    }
+
     const resData = await response.json();
 
     dispatch({
