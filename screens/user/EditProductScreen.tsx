@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useReducer } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 import {
   StyleSheet,
   View,
   Platform,
   Alert,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -12,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppStateShape } from "../../App";
 import HeaderButton from "../../components/ui/HeaderButton";
 import Input from "../../components/ui/Input";
+import Colors from "../../constants/Colors";
 import {
   NavigationOptionsShape,
   NavigationShape,
@@ -74,6 +76,9 @@ interface Props {
 }
 
 const EditProductScreen = (props: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   const productId = props.navigation.getParam("productId");
   const editedProduct = useSelector((state: AppStateShape) =>
     state.products.userProducts.find((product) => product.id === productId)
@@ -99,27 +104,47 @@ const EditProductScreen = (props: Props) => {
 
   const dispatch = useDispatch();
 
-  const submitHandler = useCallback(() => {
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Something went wrong", error, [{ text: "Okay" }]);
+    }
+    // return () => {
+    //   cleanup
+    // };
+  }, [error]);
+
+  const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
-      Alert.alert("Please complete the form");
+      Alert.alert("Wrong input!", "Something went wrong in the form.", [
+        { text: "Okay" },
+      ]);
       return;
     }
-    if (editedProduct) {
-      dispatch(
-        productsActions.updateProduct(
-          productId,
-          title,
-          description,
-          imageUrl,
-          +price
-        )
-      );
-    } else {
-      dispatch(
-        productsActions.createProduct(title, description, imageUrl, +price)
-      );
+
+    setIsLoading(true);
+    setError(undefined);
+
+    try {
+      if (editedProduct) {
+        await dispatch(
+          productsActions.updateProduct(
+            productId,
+            title,
+            description,
+            imageUrl,
+            +price
+          )
+        );
+      } else {
+        await dispatch(
+          productsActions.createProduct(title, description, imageUrl, +price)
+        );
+      }
+      props.navigation.goBack();
+    } catch (error) {
+      setError(error);
     }
-    props.navigation.goBack();
+    setIsLoading(false);
   }, [dispatch, productId, formState]);
   //   This ensures the function isn't recreated every time the component is re-rendered and we avoid creating an infinite loop
 
@@ -141,6 +166,14 @@ const EditProductScreen = (props: Props) => {
     [dispatchFormState]
     // Performance: This will never rebuild because the dependency doesn't change
   );
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -232,6 +265,7 @@ EditProductScreen.navigationOptions = (navData: NavigationOptionsShape) => {
 
 const styles = StyleSheet.create({
   form: { margin: 20 },
+  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
 });
 
 export default EditProductScreen;

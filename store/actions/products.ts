@@ -35,12 +35,16 @@ export const fetchProducts = () => {
 
 export const deleteProduct = (productId: string) => {
   return async (dispatch) => {
-    await fetch(
+    const response = await fetch(
       `https://react-native-c0dc8-default-rtdb.firebaseio.com/products/${productId}.json`,
       {
         method: "DELETE",
       }
     );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong");
+    }
 
     dispatch({
       type: DELETE_PRODUCT,
@@ -96,7 +100,7 @@ export const updateProduct = (
   price: number
 ) => {
   return async (dispatch) => {
-    await fetch(
+    const response = await fetch(
       `https://react-native-c0dc8-default-rtdb.firebaseio.com/products/${id}.json`,
       {
         method: "PATCH",
@@ -106,6 +110,10 @@ export const updateProduct = (
         body: JSON.stringify({ title, description, imageUrl, price }),
       }
     );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong");
+    }
 
     dispatch({
       type: UPDATE_PRODUCT,
