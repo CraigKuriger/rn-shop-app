@@ -6,6 +6,7 @@ export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const fetchProducts = () => {
+  // Dispatch is passed in from the Redux Thunk Middleware
   return async (dispatch) => {
     try {
       const response = await fetch(
@@ -34,9 +35,10 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = (productId: string) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://react-native-c0dc8-default-rtdb.firebaseio.com/products/${productId}.json`,
+      `https://react-native-c0dc8-default-rtdb.firebaseio.com/products/${productId}.json?auth=${token}`,
       {
         method: "DELETE",
       }
@@ -69,11 +71,17 @@ export const createProduct = (
         imageUrl: string;
         price: number;
       };
-    }) => void
+    }) => void,
+    getState: () => {
+      (): any;
+      new (): any;
+      auth: { (): any; new (): any; token: any };
+    }
   ) => {
+    const token = getState().auth.token;
     // Any async code you want!
     const response = await fetch(
-      "https://react-native-c0dc8-default-rtdb.firebaseio.com/products.json",
+      `https://react-native-c0dc8-default-rtdb.firebaseio.com/products.json?auth=${token}`,
       {
         method: "POST",
         headers: {
@@ -103,9 +111,10 @@ export const updateProduct = (
   imageUrl: string,
   price: number
 ) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://react-native-c0dc8-default-rtdb.firebaseio.com/products/${id}.json`,
+      `https://react-native-c0dc8-default-rtdb.firebaseio.com/products/${id}.json?auth=${token}`,
       {
         method: "PATCH",
         headers: {

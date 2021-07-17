@@ -8,6 +8,7 @@ import ShopNavigation from "./navigation/ShopNavigation";
 import productsReducer, { ProductsShape } from "./store/reducers/products";
 import cartReducer, { CartShape } from "./store/reducers/cart";
 import ordersReducer, { OrdersShape } from "./store/reducers/orders";
+import authReducer, { AuthShape } from "./store/reducers/auth";
 
 import { composeWithDevTools } from "redux-devtools-extension";
 import { StatusBar } from "react-native";
@@ -17,12 +18,14 @@ export interface AppStateShape {
   products: ProductsShape;
   cart: CartShape;
   orders: OrdersShape;
+  auth: AuthShape;
 }
 
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
   orders: ordersReducer,
+  auth: authReducer,
 });
 
 const store = createStore(
