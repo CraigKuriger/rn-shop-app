@@ -7,7 +7,8 @@ export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const fetchProducts = () => {
   // Dispatch is passed in from the Redux Thunk Middleware
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
     try {
       const response = await fetch(
         "https://react-native-c0dc8-default-rtdb.firebaseio.com/products.json" // .json is for Firebase only
@@ -21,13 +22,19 @@ export const fetchProducts = () => {
       const loadedProducts = [];
 
       for (const key in resData) {
-        const { title, description, imageUrl, price } = resData[key];
+        const { title, description, imageUrl, price, ownerId } = resData[key];
         loadedProducts.push(
-          new Product(key, "u1", title, imageUrl, description, price)
+          new Product(key, ownerId, title, imageUrl, description, price)
         );
       }
 
-      dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+      dispatch({
+        type: SET_PRODUCTS,
+        products: loadedProducts,
+        userProducts: loadedProducts.filter(
+          (product) => product.ownerId === userId
+        ),
+      });
     } catch (error) {
       throw error;
     }
@@ -70,15 +77,15 @@ export const createProduct = (
         description: string;
         imageUrl: string;
         price: number;
+        ownerId: string;
       };
     }) => void,
     getState: () => {
-      (): any;
-      new (): any;
-      auth: { (): any; new (): any; token: any };
+      auth: { token: string; userId: string };
     }
   ) => {
     const token = getState().auth.token;
+    const userId = getState().auth.userId;
     // Any async code you want!
     const response = await fetch(
       `https://react-native-c0dc8-default-rtdb.firebaseio.com/products.json?auth=${token}`,
@@ -87,7 +94,13 @@ export const createProduct = (
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description, imageUrl, price }),
+        body: JSON.stringify({
+          title,
+          description,
+          imageUrl,
+          price,
+          ownerId: userId,
+        }),
       }
     );
 
@@ -99,7 +112,14 @@ export const createProduct = (
 
     dispatch({
       type: CREATE_PRODUCT,
-      productData: { id: resData.name, title, description, imageUrl, price },
+      productData: {
+        id: resData.name,
+        title,
+        description,
+        imageUrl,
+        price,
+        ownerId: userId,
+      },
     });
   };
 };

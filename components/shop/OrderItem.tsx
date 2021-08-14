@@ -14,6 +14,10 @@ const OrderItem = (props: Props) => {
   const [showDetails, setShowDetails] = useState(false);
   const { formattedDate, totalAmount } = props.item;
 
+  if (!totalAmount) {
+    return <View>WHAT?</View>;
+  }
+
   return (
     <Card style={styles.orderItem}>
       <View style={styles.summary}>

@@ -12,6 +12,7 @@ import authReducer, { AuthShape } from "./store/reducers/auth";
 
 import { composeWithDevTools } from "redux-devtools-extension";
 import { StatusBar } from "react-native";
+import NavigationContainer from "./navigation/NavigationContainer";
 // REMOVE FOR PRODUCTION
 
 export interface AppStateShape {
@@ -49,7 +50,7 @@ export default function App() {
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => setFontLoaded(true)}
-        onError={(err) => console.log(err)}
+        onError={(err) => console.error(err)}
       />
     );
   }
@@ -57,7 +58,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <StatusBar hidden={false} barStyle="dark-content" />
-      <ShopNavigation />
+      <NavigationContainer />
     </Provider>
   );
 }

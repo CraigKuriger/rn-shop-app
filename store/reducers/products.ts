@@ -17,11 +17,12 @@ interface ProductsAction {
   productId?: string;
   productData?: ProductShape;
   products?: ProductShape[];
+  userProducts?: ProductShape[];
 }
 
 const initialState = {
-  availableProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter((product) => product.ownerId === "u1"),
+  availableProducts: [],
+  userProducts: [],
 };
 
 export default (
@@ -33,18 +34,17 @@ export default (
       return {
         ...state,
         availableProducts: action.products,
-        userProducts: action.products?.filter(
-          (product) => product.ownerId === "u1"
-        ),
+        userProducts: action.userProducts,
       };
     case CREATE_PRODUCT:
       if (!action.productData) {
         return state;
       }
-      const { id, title, description, imageUrl, price } = action.productData;
+      const { id, title, description, imageUrl, price, ownerId } =
+        action.productData;
       const newProduct = new Product(
         id,
-        "ul",
+        ownerId,
         title,
         imageUrl,
         description,
