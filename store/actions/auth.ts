@@ -3,6 +3,13 @@ export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
+export const SET_DID_TRY_AUTO_LOGIN = "SET_DID_TRY_AUTO_LOGIN";
+
+export const setDidTryAutoLogin = () => {
+  return {
+    type: SET_DID_TRY_AUTO_LOGIN,
+  };
+};
 
 export const authenticate = (userId, token, expirationTime) => {
   return (dispatch) => {
@@ -20,7 +27,7 @@ export const signup = (email, password) => {
   return async (dispatch) => {
     // Get API key from project settings
     // https://console.firebase.google.com/project/react-native-c0dc8/settings/general
-    const apiKey = "AIzaSyAMIpJ084w7T3JK41lcxgRaFirmfI6Tn4E";
+    const apiKey = "AIzaSyASQlgo4eEf411xNtP026JeQ1zZbWqyXas";
     // Get authentication URLs from docs
     // https://firebase.google.com/docs/reference/rest/auth
     const response = await fetch(
@@ -62,7 +69,7 @@ export const signup = (email, password) => {
 
 export const login = (email, password) => {
   return async (dispatch) => {
-    const apiKey = "AIzaSyAMIpJ084w7T3JK41lcxgRaFirmfI6Tn4E";
+    const apiKey = "AIzaSyASQlgo4eEf411xNtP026JeQ1zZbWqyXas";
     const response = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
       {

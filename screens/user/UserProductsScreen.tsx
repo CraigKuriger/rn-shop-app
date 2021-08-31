@@ -36,7 +36,7 @@ const UserProductsScreen = (props: Props) => {
   };
 
   const editProductHandler = (id) => {
-    props.navigation.navigate("EditProducts", { productId: id });
+    props.navigation.navigate("EditProduct", { productId: id });
   };
 
   if (userProducts.length === 0) {
@@ -71,15 +71,17 @@ const UserProductsScreen = (props: Props) => {
   );
 };
 
-UserProductsScreen.navigationOptions = (navData: NavigationOptionsShape) => {
+export const screenOptions = (navData: NavigationOptionsShape) => {
   return {
     headerTitle: "Your Products",
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
-          iconName={Platform.OS !== "android" ? "md-menu" : "ios-menu"}
-          onPress={() => navData.navigation.toggleDrawer()}
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
         />
       </HeaderButtons>
     ),
@@ -87,8 +89,10 @@ UserProductsScreen.navigationOptions = (navData: NavigationOptionsShape) => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Add"
-          iconName={Platform.OS !== "android" ? "md-create" : "ios-create"}
-          onPress={() => navData.navigation.navigate("EditProducts")}
+          iconName={Platform.OS === "android" ? "md-create" : "ios-create"}
+          onPress={() => {
+            navData.navigation.navigate("EditProduct");
+          }}
         />
       </HeaderButtons>
     ),

@@ -79,7 +79,7 @@ const EditProductScreen = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const productId = props.navigation.getParam("productId");
+  const productId = props.route?.params?.productId;
   const editedProduct = useSelector((state: AppStateShape) =>
     state.products.userProducts.find((product) => product.id === productId)
   );
@@ -149,7 +149,19 @@ const EditProductScreen = (props: Props) => {
   //   This ensures the function isn't recreated every time the component is re-rendered and we avoid creating an infinite loop
 
   useEffect(() => {
-    props.navigation.setParams({ submit: submitHandler });
+    props.navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+          <Item
+            title="Save"
+            iconName={
+              Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
+            }
+            onPress={submitHandler}
+          />
+        </HeaderButtons>
+      ),
+    });
   }, [submitHandler]);
   //   useEffects dependency is submitHandler which doen't change so it only executes once
 
@@ -243,23 +255,10 @@ const EditProductScreen = (props: Props) => {
   );
 };
 
-EditProductScreen.navigationOptions = (navData: NavigationOptionsShape) => {
-  const submitFunction = navData.navigation.getParam("submit");
+export const screenOptions = (navData: NavigationOptionsShape) => {
+  const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: navData.navigation.getParam("productId")
-      ? "Edit Product"
-      : "Add Product",
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Save"
-          iconName={
-            Platform.OS !== "android" ? "md-checkmark" : "ios-checkmark"
-          }
-          onPress={submitFunction}
-        />
-      </HeaderButtons>
-    ),
+    headerTitle: routeParams.productId ? "Edit Product" : "Add Product",
   };
 };
 

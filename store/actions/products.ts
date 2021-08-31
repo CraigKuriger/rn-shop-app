@@ -11,7 +11,7 @@ export const fetchProducts = () => {
     const userId = getState().auth.userId;
     try {
       const response = await fetch(
-        "https://react-native-c0dc8-default-rtdb.firebaseio.com/products.json" // .json is for Firebase only
+        "https://react-burger-builder-dcd5d-default-rtdb.firebaseio.com/products.json" // .json is for Firebase only
       );
 
       if (!response.ok) {
@@ -45,7 +45,7 @@ export const deleteProduct = (productId: string) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const response = await fetch(
-      `https://react-native-c0dc8-default-rtdb.firebaseio.com/products/${productId}.json?auth=${token}`,
+      `https://react-burger-builder-dcd5d-default-rtdb.firebaseio.com/products/${productId}.json?auth=${token}`,
       {
         method: "DELETE",
       }
@@ -88,7 +88,7 @@ export const createProduct = (
     const userId = getState().auth.userId;
     // Any async code you want!
     const response = await fetch(
-      `https://react-native-c0dc8-default-rtdb.firebaseio.com/products.json?auth=${token}`,
+      `https://react-burger-builder-dcd5d-default-rtdb.firebaseio.com/products.json?auth=${token}`,
       {
         method: "POST",
         headers: {
@@ -134,7 +134,7 @@ export const updateProduct = (
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const response = await fetch(
-      `https://react-native-c0dc8-default-rtdb.firebaseio.com/products/${id}.json?auth=${token}`,
+      `https://react-burger-builder-dcd5d-default-rtdb.firebaseio.com/products/${id}.json?auth=${token}`,
       {
         method: "PATCH",
         headers: {

@@ -15,27 +15,33 @@ const OrderItem = (props: Props) => {
   const { formattedDate, totalAmount } = props.item;
 
   if (!totalAmount) {
-    return <View>WHAT?</View>;
+    return (
+      <View>
+        <Text>Where has the amount gone?</Text>
+      </View>
+    );
   }
 
   return (
     <Card style={styles.orderItem}>
-      <View style={styles.summary}>
-        <Text style={styles.totalAmount}>{totalAmount.toFixed(2)}</Text>
-        <Text style={styles.date}>{formattedDate}</Text>
-      </View>
-      <Button
-        title={showDetails ? "Hide Details" : "Show Details"}
-        color={Colors.primary}
-        onPress={() => setShowDetails((prevState) => !prevState)}
-      />
-      {showDetails && (
-        <View style={styles.detailItems}>
-          {props.item.items.map((item: CartItemShape) => (
-            <CartItem key={item.productId} item={item} onRemove={() => {}} />
-          ))}
+      <>
+        <View style={styles.summary}>
+          <Text style={styles.totalAmount}>{totalAmount.toFixed(2)}</Text>
+          <Text style={styles.date}>{formattedDate}</Text>
         </View>
-      )}
+        <Button
+          title={showDetails ? "Hide Details" : "Show Details"}
+          color={Colors.primary}
+          onPress={() => setShowDetails((prevState) => !prevState)}
+        />
+        {showDetails && (
+          <View style={styles.detailItems}>
+            {props.item.items.map((item: CartItemShape) => (
+              <CartItem key={item.productId} item={item} onRemove={() => {}} />
+            ))}
+          </View>
+        )}
+      </>
     </Card>
   );
 };

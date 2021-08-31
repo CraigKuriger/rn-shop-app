@@ -7,9 +7,10 @@ export const SET_ORDERS = "SET_ORDERS";
 export const fetchOrders = () => {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
+
     try {
       const response = await fetch(
-        `https://react-native-c0dc8-default-rtdb.firebaseio.com/orders/${userId}.json` // .json is for Firebase only
+        `https://react-burger-builder-dcd5d-default-rtdb.firebaseio.com/orders/${userId}.json` // .json is for Firebase only
       );
 
       if (!response.ok) {
@@ -17,6 +18,7 @@ export const fetchOrders = () => {
       }
 
       const resData = await response.json();
+
       const loadedOrders = [];
 
       for (const key in resData) {
@@ -35,12 +37,11 @@ export const fetchOrders = () => {
 
 export const addOrder = (cartItems: CartItemShape[], totalAmount: number) => {
   return async (dispatch, getState) => {
-    console.debug("Orders", getState().auth);
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const date = new Date();
     const response = await fetch(
-      `https://react-native-c0dc8-default-rtdb.firebaseio.com/orders/${userId}.json?auth=${token}`,
+      `https://react-burger-builder-dcd5d-default-rtdb.firebaseio.com/orders/${userId}.json?auth=${token}`,
       {
         method: "POST",
         headers: {

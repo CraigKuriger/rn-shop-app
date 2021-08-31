@@ -12,7 +12,7 @@ import authReducer, { AuthShape } from "./store/reducers/auth";
 
 import { composeWithDevTools } from "redux-devtools-extension";
 import { StatusBar } from "react-native";
-import NavigationContainer from "./navigation/NavigationContainer";
+import AppNavigator from "./navigation/AppNavigator";
 // REMOVE FOR PRODUCTION
 
 export interface AppStateShape {
@@ -58,7 +58,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <StatusBar hidden={false} barStyle="dark-content" />
-      <NavigationContainer />
+      <AppNavigator />
     </Provider>
   );
 }

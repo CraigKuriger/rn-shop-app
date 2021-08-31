@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   amount: { color: Colors.primary },
 });
 
-CartScreen.navigationOptions = {
+export const screenOptions = {
   headerTitle: "Your Cart",
 };
 
